@@ -1,0 +1,353 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+        integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <title>Home Simulator</title>
+</head>
+
+<body>
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div class="px-3 py-3 lg:px-5 lg:pl-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-start">
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
+                        aria-controls="logo-sidebar" type="button"
+                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        <span class="sr-only">Open sidebar</span>
+                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" fill-rule="evenodd"
+                                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+                            </path>
+                        </svg>
+                    </button>
+                    <a class="flex ml-2 md:mr-24">
+                        <span
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Home
+                            Simulator</span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <button onclick="logout_user()"
+                        class="inline-flex items-center py-1 px-2 text-sm text-gray-500 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        <span class="sr-only">Log out</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
+                            <path fill-rule="evenodd"
+                                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <aside id="default-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700 mt-14"
+        aria-label="Sidebar">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+            <h2
+                class="mb-4 text-xl text-center font-extrabold leading-none tracking-tight text-gray-900 md:text-lg lg:text-2xl dark:text-white">
+                Electric appliances</h2>
+            <ul class="space-y-2 font-medium">
+                <li class="flex flex-row justify-between hover:bg-gray-100 rounded dark:hover:bg-gray-700">
+                    <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 16 16">
+                            <path
+                                d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z" />
+                        </svg>
+                        <span class="ml-3">Bulb</span>
+                    </a>
+                    <button id="bulb_button"
+                        class="bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 px-3 rounded-lg">Add</button>
+                </li>
+                <li class="flex flex-row justify-between hover:bg-gray-100 rounded dark:hover:bg-gray-700">
+                    <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 16 16">
+                            <path
+                                d="M10 3c0 1.313-.304 2.508-.8 3.4a1.991 1.991 0 0 0-1.484-.38c-.28-.982-.91-2.04-1.838-2.969a8.368 8.368 0 0 0-.491-.454A5.976 5.976 0 0 1 8 2c.691 0 1.355.117 1.973.332.018.219.027.442.027.668Zm0 5c0 .073-.004.146-.012.217 1.018-.019 2.2-.353 3.331-1.006a8.39 8.39 0 0 0 .57-.361 6.004 6.004 0 0 0-2.53-3.823 9.02 9.02 0 0 1-.145.64c-.34 1.269-.944 2.346-1.656 3.079.277.343.442.78.442 1.254Zm-.137.728a2.007 2.007 0 0 1-1.07 1.109c.525.87 1.405 1.725 2.535 2.377.2.116.402.222.605.317a5.986 5.986 0 0 0 2.053-4.111c-.208.073-.421.14-.641.199-1.264.339-2.493.356-3.482.11ZM8 10c-.45 0-.866-.149-1.2-.4-.494.89-.796 2.082-.796 3.391 0 .23.01.457.027.678A5.99 5.99 0 0 0 8 14c.94 0 1.83-.216 2.623-.602a8.359 8.359 0 0 1-.497-.458c-.925-.926-1.555-1.981-1.836-2.96-.094.013-.191.02-.29.02ZM6 8c0-.08.005-.16.014-.239-1.02.017-2.205.351-3.34 1.007a8.366 8.366 0 0 0-.568.359 6.003 6.003 0 0 0 2.525 3.839 8.37 8.37 0 0 1 .148-.653c.34-1.267.94-2.342 1.65-3.075A1.988 1.988 0 0 1 6 8Zm-3.347-.632c1.267-.34 2.498-.355 3.488-.107.196-.494.583-.89 1.07-1.1-.524-.874-1.406-1.733-2.541-2.388a8.363 8.363 0 0 0-.594-.312 5.987 5.987 0 0 0-2.06 4.106c.206-.074.418-.14.637-.199ZM8 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14Zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16Z" />
+                        </svg>
+                        <span class="ml-3">Fan</span>
+                    </a>
+                    <button id="fan_button"
+                        class="bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 px-3 rounded-lg">Add</button>
+                </li>
+                <li class="flex flex-row justify-between hover:bg-gray-100 rounded dark:hover:bg-gray-700">
+                    <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
+                        <svg fill="#000000" viewBox="0 0 24 24" id="ac" xmlns="http://www.w3.org/2000/svg"
+                            class="w-7 h-7">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path id="primary"
+                                    d="M20,17H4a1,1,0,0,1-1-1V8A1,1,0,0,1,4,7H20a1,1,0,0,1,1,1v8A1,1,0,0,1,20,17Zm-3-2H7v2H17Zm-4-4h4"
+                                    style="fill: none; stroke: #000000; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5;">
+                                </path>
+                            </g>
+                        </svg>
+                        <span class="ml-3">AC</span>
+                    </a>
+                    <button id="ac_button"
+                        class="bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 px-3 rounded-lg">Add</button>
+                </li>
+                <li class="flex flex-row justify-between hover:bg-gray-100 rounded dark:hover:bg-gray-700">
+                    <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 h-6" viewBox="0 0 16 16">
+                            <path
+                                d="M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zM13.991 3l.024.001a1.46 1.46 0 0 1 .538.143.757.757 0 0 1 .302.254c.067.1.145.277.145.602v5.991l-.001.024a1.464 1.464 0 0 1-.143.538.758.758 0 0 1-.254.302c-.1.067-.277.145-.602.145H2.009l-.024-.001a1.464 1.464 0 0 1-.538-.143.758.758 0 0 1-.302-.254C1.078 10.502 1 10.325 1 10V4.009l.001-.024a1.46 1.46 0 0 1 .143-.538.758.758 0 0 1 .254-.302C1.498 3.078 1.675 3 2 3h11.991zM14 2H2C0 2 0 4 0 4v6c0 2 2 2 2 2h12c2 0 2-2 2-2V4c0-2-2-2-2-2z" />
+                        </svg>
+                        <span class="ml-3">Television</span>
+                    </a>
+                    <button id="tv_button"
+                        class="bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 px-3 rounded-lg">Add</button>
+                </li>
+                <li class="flex flex-row justify-between hover:bg-gray-100 rounded dark:hover:bg-gray-700">
+                    <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
+                        <svg class="w-6 h-6" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill="var(--ci-primary-color, #000000)"
+                                    d="M376,16H136A48.054,48.054,0,0,0,88,64V464a32.036,32.036,0,0,0,32,32H392a32.036,32.036,0,0,0,32-32V64A48.054,48.054,0,0,0,376,16Zm16,448H120V240H392Zm0-256H120V64a16.019,16.019,0,0,1,16-16H376a16.019,16.019,0,0,1,16,16Z"
+                                    class="ci-primary"></path>
+                                <rect width="32" height="96" x="144" y="280" fill="var(--ci-primary-color, #000000)"
+                                    class="ci-primary"></rect>
+                                <rect width="32" height="64" x="144" y="104" fill="var(--ci-primary-color, #000000)"
+                                    class="ci-primary"></rect>
+                            </g>
+                        </svg>
+                        <span class="ml-3">Fridge</span>
+                    </a>
+                    <button id="fridge_button"
+                        class="bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 px-3 rounded-lg">Add</button>
+                </li>
+                <li class="flex flex-row justify-between hover:bg-gray-100 rounded dark:hover:bg-gray-700">
+                    <a class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white">
+                        <svg viewBox="0 0 1024 1024" fill="#000000" class="w-6 h-6" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M106.4 817.6c-44 0-81.6-37.6-81.6-81.6V288c0-44 37.6-81.6 81.6-81.6h816.8c40 0 76 39.2 76 81.6v453.6c0 36.8-30.4 76-76 76H106.4z m-5.6-563.2c-16.8 0-27.2 10.4-27.2 27.2v460c0 16.8 10.4 27.2 27.2 27.2h816.8c16 0 33.6-10.4 33.6-27.2V281.6c0-16.8-10.4-27.2-27.2-27.2H100.8z"
+                                    fill=""></path>
+                                <path
+                                    d="M185.6 726.4c-32 0-57.6-25.6-57.6-57.6V354.4c0-32 25.6-57.6 57.6-57.6h477.6c32 0 57.6 25.6 57.6 57.6v314.4c0 32-25.6 57.6-57.6 57.6H185.6z m18.4-380c-16.8 0-27.2 11.2-27.2 20.8v290.4c0 10.4 10.4 20.8 27.2 20.8h435.2c16.8 0 27.2-11.2 27.2-20.8V367.2c0-10.4-10.4-20.8-27.2-20.8H204z m610.4 180.8c-13.6 0-21.6-7.2-21.6-21.6 0-13.6 7.2-21.6 21.6-21.6h91.2c13.6 0 21.6 7.2 21.6 21.6 0 13.6-7.2 21.6-21.6 21.6h-91.2z m0-84.8c-13.6 0-21.6-7.2-21.6-21.6s7.2-21.6 21.6-21.6h91.2c13.6 0 21.6 7.2 21.6 21.6s-7.2 21.6-21.6 21.6h-91.2z m0-91.2c-13.6 0-21.6-7.2-21.6-21.6 0-13.6 7.2-21.6 21.6-21.6h91.2c13.6 0 21.6 7.2 21.6 21.6 0 13.6-7.2 21.6-21.6 21.6h-91.2z"
+                                    fill=""></path>
+                            </g>
+                        </svg>
+                        <span class="ml-3">Oven</span>
+                    </a>
+                    <button id="oven_button"
+                        class="bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 px-3 rounded-lg">Add</button>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64 mt-14">
+        <button id="run_simulator" class="mb-4 py-1 px-2 bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 rounded-lg">Run
+            Simulator</button>
+        <div class="p-4 border-2 min-h-screen bg-white border-gray-200 border-dashed rounded-lg dark:border-gray-700">
+
+            <div id="adding_container" class="grid grid-cols-4 gap-4 mb-4">
+
+            </div>
+            <!-- <h2 id="blank_text"
+                class="text-center my-4 text-lg leading-none tracking-tight text-gray-900 dark:text-white">No items
+                added</h2> -->
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            // (async function getAllAppliances() {
+            //     let appliances_list = await getAllAppliancesList()();
+            //     console.log(appliances_list);
+            // })();
+
+        });
+
+        function removeItemOnce(arr, value) {
+            var index = arr.indexOf(value);
+            if (index > -1) {
+                arr.splice(index, 1);
+            }
+            return arr;
+        }
+
+        var selected_arr = [];
+        document.getElementById('run_simulator').onclick = async function () {
+
+            var user_id = window.localStorage.getItem('user_id');
+            await eel.runSimulator(user_id, selected_arr)();
+            // console.log(data);
+        }
+
+
+        document.getElementById('bulb_button').onclick = function () {
+            var container = document.getElementById('adding_container');
+
+            var bulb_element = document.createElement('div');
+            bulb_element.classList.add("shadow-md", "flex", "flex-col", "items-center", "justify-center", "h-24", "rounded", "bg-gray-50", "dark:bg-gray-800");
+            var name_element = document.createElement('p');
+            name_element.classList.add("text-2xl", "mb-2", "text-gray-800");
+            name_element.innerText = "Bulb";
+
+            var remove_button = document.createElement('button');
+            remove_button.classList.add("py-1", "px-2", "bg-blue-200", "hover:bg-blue-400", "focus:bg-blue-400", "rounded-lg");
+            remove_button.innerText = "Remove";
+            remove_button.onclick = function () {
+                container.removeChild(bulb_element);
+                selected_arr = removeItemOnce(selected_arr, 'bulb')
+            }
+            bulb_element.appendChild(name_element);
+            bulb_element.appendChild(remove_button);
+
+            container.appendChild(bulb_element);
+
+            // adding selected items to array for use
+            selected_arr.push('bulb');
+        }
+        document.getElementById('fan_button').onclick = function () {
+            var container = document.getElementById('adding_container');
+
+            var fan_element = document.createElement('div');
+            fan_element.classList.add("shadow-md", "flex", "flex-col", "items-center", "justify-center", "h-24", "rounded", "bg-gray-50", "dark:bg-gray-800");
+            var name_element = document.createElement('p');
+            name_element.classList.add("text-2xl", "mb-2", "text-gray-800");
+            name_element.innerText = "Fan";
+
+            var remove_button = document.createElement('button');
+            remove_button.classList.add("py-1", "px-2", "bg-blue-200", "hover:bg-blue-400", "focus:bg-blue-400", "rounded-lg");
+            remove_button.innerText = "Remove";
+            remove_button.onclick = function () {
+                container.removeChild(fan_element);
+                selected_arr = removeItemOnce(selected_arr, 'fan')
+            }
+            fan_element.appendChild(name_element);
+            fan_element.appendChild(remove_button);
+
+            container.appendChild(fan_element);
+
+            // adding selected items to array for use
+            selected_arr.push('fan');
+        }
+        document.getElementById('ac_button').onclick = function () {
+            var container = document.getElementById('adding_container');
+
+            var ac_element = document.createElement('div');
+            ac_element.classList.add("shadow-md", "flex", "flex-col", "items-center", "justify-center", "h-24", "rounded", "bg-gray-50", "dark:bg-gray-800");
+            var name_element = document.createElement('p');
+            name_element.classList.add("text-2xl", "mb-2", "text-gray-800");
+            name_element.innerText = "AC";
+
+            var remove_button = document.createElement('button');
+            remove_button.classList.add("py-1", "px-2", "bg-blue-200", "hover:bg-blue-400", "focus:bg-blue-400", "rounded-lg");
+            remove_button.innerText = "Remove";
+            remove_button.onclick = function () {
+                container.removeChild(ac_element);
+                selected_arr = removeItemOnce(selected_arr, 'ac')
+            }
+            ac_element.appendChild(name_element);
+            ac_element.appendChild(remove_button);
+
+            container.appendChild(ac_element);
+
+            // adding selected items to array for use
+            selected_arr.push('ac');
+        }
+        document.getElementById('tv_button').onclick = function () {
+            var container = document.getElementById('adding_container');
+
+            var tv_element = document.createElement('div');
+            tv_element.classList.add("shadow-md", "flex", "flex-col", "items-center", "justify-center", "h-24", "rounded", "bg-gray-50", "dark:bg-gray-800");
+            var name_element = document.createElement('p');
+            name_element.classList.add("text-2xl", "mb-2", "text-gray-800");
+            name_element.innerText = "TV";
+
+            var remove_button = document.createElement('button');
+            remove_button.classList.add("py-1", "px-2", "bg-blue-200", "hover:bg-blue-400", "focus:bg-blue-400", "rounded-lg");
+            remove_button.innerText = "Remove";
+            remove_button.onclick = function () {
+                container.removeChild(tv_element);
+                selected_arr = removeItemOnce(selected_arr, 'tv')
+            }
+            tv_element.appendChild(name_element);
+            tv_element.appendChild(remove_button);
+
+            container.appendChild(tv_element);
+
+            // adding selected items to array for use
+            selected_arr.push('tv');
+        }
+        document.getElementById('fridge_button').onclick = function () {
+            var container = document.getElementById('adding_container');
+
+            var fridge_element = document.createElement('div');
+            fridge_element.classList.add("shadow-md", "flex", "flex-col", "items-center", "justify-center", "h-24", "rounded", "bg-gray-50", "dark:bg-gray-800");
+            var name_element = document.createElement('p');
+            name_element.classList.add("text-2xl", "mb-2", "text-gray-800");
+            name_element.innerText = "Fridge";
+
+            var remove_button = document.createElement('button');
+            remove_button.classList.add("py-1", "px-2", "bg-blue-200", "hover:bg-blue-400", "focus:bg-blue-400", "rounded-lg");
+            remove_button.innerText = "Remove";
+            remove_button.onclick = function () {
+                container.removeChild(fridge_element);
+                selected_arr = removeItemOnce(selected_arr, 'fridge')
+            }
+            fridge_element.appendChild(name_element);
+            fridge_element.appendChild(remove_button);
+
+            container.appendChild(fridge_element);
+
+            // adding selected items to array for use
+            selected_arr.push('fridge');
+        }
+        document.getElementById('oven_button').onclick = function () {
+            var container = document.getElementById('adding_container');
+
+            var oven_element = document.createElement('div');
+            oven_element.classList.add("shadow-md", "flex", "flex-col", "items-center", "justify-center", "h-24", "rounded", "bg-gray-50", "dark:bg-gray-800");
+            var name_element = document.createElement('p');
+            name_element.classList.add("text-2xl", "mb-2", "text-gray-800");
+            name_element.innerText = "Oven";
+
+            var remove_button = document.createElement('button');
+            remove_button.classList.add("py-1", "px-2", "bg-blue-200", "hover:bg-blue-400", "focus:bg-blue-400", "rounded-lg");
+            remove_button.innerText = "Remove";
+            remove_button.onclick = function () {
+                container.removeChild(oven_element);
+                selected_arr = removeItemOnce(selected_arr, 'oven')
+            }
+            oven_element.appendChild(name_element);
+            oven_element.appendChild(remove_button);
+
+            container.appendChild(oven_element);
+
+            // adding selected items to array for use
+            selected_arr.push('oven');
+        }
+
+
+        // logout user on button click
+        async function logout_user() {
+            let callback = await eel.signOutUser()();
+            if (callback == null) { window.location.href = '/starter.html'; }
+        }
+    </script>
+
+</body>
+
+</html>
