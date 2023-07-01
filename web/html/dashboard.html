@@ -157,6 +157,8 @@
     <div class="p-4 sm:ml-64 mt-14">
         <button id="run_simulator" class="mb-4 py-1 px-2 bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 rounded-lg">Run
             Simulator</button>
+        <button id="stop_simulator" class="mb-4 py-1 px-2 bg-red-200 hover:bg-red-400 focus:bg-red-400 rounded-lg">Stop
+            Simulator</button>
         <div class="p-4 border-2 min-h-screen bg-white border-gray-200 border-dashed rounded-lg dark:border-gray-700">
 
             <div id="adding_container" class="grid grid-cols-4 gap-4 mb-4">
@@ -188,12 +190,38 @@
 
         var selected_arr = [];
         document.getElementById('run_simulator').onclick = async function () {
-
             var user_id = window.localStorage.getItem('user_id');
-            await eel.runSimulator(user_id, selected_arr)();
+            var user_type = window.localStorage.getItem('user-type');
+
+            if (selected_arr.length > 0) {
+                var call = await eel.runSimulator(user_id, user_type, selected_arr)();
+                if (call == "Started") {
+                    alert('Simulation started');
+                } else if (call == "Already running") {
+                    alert("Simulation already running, stop to restart.");
+                }
+            } else {
+                alert('No appliances to Simulate.');
+            }
             // console.log(data);
         }
 
+        document.getElementById('stop_simulator').onclick = async function () {
+
+            var running = await eel.isThreadRunning()();
+            console.log(running);
+            if (running == true) {
+                var call = await eel.stopSimulator()();
+                if (call == "Stopped") {
+                    alert('Simulation Stopped.');
+                } else if (call == "Not running") {
+                    alert("Simulation not running.");
+                }
+            } else {
+                alert('Simulation not yet started.')
+            }
+            // console.log(data);
+        }
 
         document.getElementById('bulb_button').onclick = function () {
             var container = document.getElementById('adding_container');
