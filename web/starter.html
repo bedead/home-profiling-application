@@ -85,41 +85,39 @@
             var lastPage = document.referrer;
             console.log(lastPage);
             if (lastPage == "") {
-                (async function checkLocalStorage() {
-                    // fetch dashboard data
+                (async function checkLocalStorage() { // fetch dashboard data
                     let email = window.localStorage.getItem('email');
                     let password = window.localStorage.getItem('password');
 
                     if (email != null && password != null) {
-                        let user_data = await eel.signInUser(email, password)();
-                        console.log(user_data[0]);
-                        if (user_data[0] != null && user_data[3] == 'Consumer') {
-                            // call store user data function
-                            storeLocalData(email, password, user_data[0], user_data[2], user_data[3]);
-                            window.location.href = '/html/dashboard.html';
-                        } else if (user_data[0] != null && user_data[3] == 'Producer') {
-                            // call store user data function
-                            storeLocalData(email, password, user_data[0], user_data[2], user_data[3]);
-                            window.location.href = '/html/dashboard.html';
-                        } else {
-                            alert('Access forbidden.');
-                            // if unknown error show pop up that some error has occured
+                        let user_data = await eel.signInUser(email, password, true)();
+                        let user_type = window.localStorage.getItem('user-type');
+                        if (user_data == 'success') {
+                            if (user_type == 'Consumer' || user_type == 'Producer') {
+                                window.location.href = '/html/dashboard.html';
+                            } else {
+                                alert('Access forbidden!');
+                            }
                         }
                     }
                 })();
             }
         });
-        
+
 
         // store email and password in local storeage 
-        function storeLocalData(email, password, user_id, private_key, user_type) {
+        function storeLocalData(email, password, user_id, private_key, user_type, aggregator_public_key, aggregator_id, access_token, chaos_shared_list, username, utility_public_key) {
             window.localStorage.setItem('email', email);
             window.localStorage.setItem('password', password);
             window.localStorage.setItem('user_id', user_id);
             window.localStorage.setItem('private-key', private_key);
             window.localStorage.setItem('user-type', user_type);
-            // window.localStorage.setItem('aggregator-public-key', aggregator_public_key);
-            // window.localStorage.setItem('aggregator-id', aggregator_id);
+            window.localStorage.setItem('aggregator-public-key', aggregator_public_key);
+            window.localStorage.setItem('aggregator-id', aggregator_id);
+            window.localStorage.setItem('access-token', access_token);
+            window.localStorage.setItem('chaos-shared-list', chaos_shared_list);
+            window.localStorage.setItem('utility-public-key', utility_public_key);
+            window.localStorage.setItem('ascalate-option', false);
         }
 
 
@@ -128,14 +126,13 @@
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
 
-            let user_data = await eel.signInUser(email, password)();
+            let user_data = await eel.signInUser(email, password, false)();
             console.log(user_data[0]);
 
             if (user_data[0] != null && (user_data[3] == 'Consumer' || user_data[3] == 'Producer')) {
 
                 // call store user data function
-                storeLocalData(email, password, user_data[0], user_data[2], user_data[3]);
-
+                storeLocalData(email, password, user_data[0], user_data[2], user_data[3], user_data[4], user_data[5], user_data[6], user_data[7], user_data[8], user_data[9]);
                 window.location.href = '/html/dashboard.html';
             }
             else {

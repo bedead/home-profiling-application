@@ -155,10 +155,18 @@
     </aside>
 
     <div class="p-4 sm:ml-64 mt-14">
-        <button id="run_simulator" class="mb-4 py-1 px-2 bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 rounded-lg">Run
-            Simulator</button>
-        <button id="stop_simulator" class="mb-4 py-1 px-2 bg-red-200 hover:bg-red-400 focus:bg-red-400 rounded-lg">Stop
-            Simulator</button>
+        <div class="mb-4 flex flex-row space-x-2">
+            <button id="run_simulator" class="py-1 px-2 bg-blue-200 hover:bg-blue-400 focus:bg-blue-400 rounded-lg">Run
+                Simulator</button>
+            <button id="stop_simulator" class="py-1 px-2 bg-red-200 hover:bg-red-400 focus:bg-red-400 rounded-lg">Stop
+                Simulator</button>
+            <button onclick="toggleTimerDialoy();"
+                class="py-1 px-2 bg-green-200 hover:bg-green-400 focus:bg-green-400 rounded-lg">
+                Set time
+            </button>
+            <p id="timerNumber" class="py-1 leading-normal text-lg"><span id="hours_value">0</span> H : <span
+                    id="mins_value">0</span> M</p>
+        </div>
         <div class="p-4 border-2 min-h-screen bg-white border-gray-200 border-dashed rounded-lg dark:border-gray-700">
 
             <div id="adding_container" class="grid grid-cols-4 gap-4 mb-4">
@@ -170,6 +178,45 @@
         </div>
     </div>
 
+    <div class="pointer-events-none fixed left-0 top-0 z-[1055] h-full w-full hidden overflow-y-auto overflow-x-hidden outline"
+        id="timerDialog">
+        <div
+            class=" relative flex min-h-[calc(100%-1rem)] w-auto translate-y-[-50px] items-center transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:min-h-[calc(100%-3.5rem)] min-[576px]:max-w-[500px]">
+            <div
+                class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+                <div
+                    class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+                    <!--Modal title-->
+                    <h5 class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200" id="">
+                        For how much time your want the simulation to run?
+                    </h5>
+                    <!--Close button-->
+                    <button type="button" onclick="toggleTimerDialoy();"
+                        class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!--Modal body-->
+                <div class="relative p-4">
+                    <input class="outline rounded px-2" type="time" name="time" id="time">
+                </div>
+
+                <!--Modal footer-->
+                <div
+                    class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+                    <button type="button" onclick="setTime();"
+                        class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:ring-0 active:bg-primary-accent-200">
+                        Confirm time
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         $(document).ready(function () {
@@ -177,7 +224,6 @@
             //     let appliances_list = await getAllAppliancesList()();
             //     console.log(appliances_list);
             // })();
-
         });
 
         function removeItemOnce(arr, value) {
@@ -189,21 +235,26 @@
         }
 
         var selected_arr = [];
+        var run_hours = 0;
+        var run_min = 0;
         document.getElementById('run_simulator').onclick = async function () {
             var user_id = window.localStorage.getItem('user_id');
             var user_type = window.localStorage.getItem('user-type');
 
             if (selected_arr.length > 0) {
-                var call = await eel.runSimulator(user_id, user_type, selected_arr)();
+                var call = await eel.runSimulator(user_id, user_type, selected_arr, run_hours, run_min)();
                 if (call == "Started") {
                     alert('Simulation started');
-                } else if (call == "Already running") {
+                    call = "";
+                } else if (call == 'Set time') {
+                    alert('Set time to run simulation.');
+                }
+                else if (call == "Already running") {
                     alert("Simulation already running, stop to restart.");
                 }
             } else {
                 alert('No appliances to Simulate.');
             }
-            // console.log(data);
         }
 
         document.getElementById('stop_simulator').onclick = async function () {
@@ -214,6 +265,7 @@
                 var call = await eel.stopSimulator()();
                 if (call == "Stopped") {
                     alert('Simulation Stopped.');
+                    call = "";
                 } else if (call == "Not running") {
                     alert("Simulation not running.");
                 }
@@ -221,6 +273,38 @@
                 alert('Simulation not yet started.')
             }
             // console.log(data);
+        }
+
+
+        function toggleTimerDialoy() {
+            var timerDialpg = document.getElementById('timerDialog');
+            timerDialpg.classList.toggle('hidden');
+            timerDialpg.classList.toggle('pointer-events-none');
+        }
+
+        function setTime() {
+            toggleTimerDialoy();
+
+            var time_i = document.getElementById('time').value;
+            var h_set = time_i.split(":")[0];
+            var m_set = time_i.split(":")[1];
+
+            var d = new Date();
+            var h_curr = d.getHours();
+            var m_curr = d.getMinutes();
+
+            run_hours = h_set - h_curr;
+            if (!run_hours) {
+                run_hours = 0;
+            }
+            run_min = m_set - m_curr;
+            if (!run_min) {
+                run_min = 0;
+            }
+
+            document.getElementById('hours_value').innerText = h_set;
+            document.getElementById('mins_value').innerText = m_set;
+            console.log(run_hours, run_min);
         }
 
         document.getElementById('bulb_button').onclick = function () {
@@ -237,7 +321,7 @@
             remove_button.innerText = "Remove";
             remove_button.onclick = function () {
                 container.removeChild(bulb_element);
-                selected_arr = removeItemOnce(selected_arr, 'bulb')
+                selected_arr = removeItemOnce(selected_arr, 'Bulb')
             }
             bulb_element.appendChild(name_element);
             bulb_element.appendChild(remove_button);
@@ -245,7 +329,7 @@
             container.appendChild(bulb_element);
 
             // adding selected items to array for use
-            selected_arr.push('bulb');
+            selected_arr.push('Bulb');
         }
         document.getElementById('fan_button').onclick = function () {
             var container = document.getElementById('adding_container');
