@@ -1,4 +1,6 @@
+import csv
 import random
+import time
 
 from web.security.chaos_generator.triple_pendulum import encrypt_Text_New
 
@@ -10,6 +12,8 @@ def generate_Dummy_Room_Data(user_id: str, appliances_list: list):
     data = []
     for a in loads:
         # cipher_load_type = encrypt_Text(str(a))
+        starttime = time.time()
+
         cipher_load_type = str(a)
         # Generate random energy consumption per hour for a room
         v = random.randint(225, 235)
@@ -18,16 +22,19 @@ def generate_Dummy_Room_Data(user_id: str, appliances_list: list):
         i = random.randint(1, 4)
         p = round(v * i * pf, 1)
 
-        # encryption of values
-        # cipher_v = encrypt_Text(str(v)); cipher_f = encrypt_Text(str(f))
-        # cipher_pf = encrypt_Text(str(pf)); cipher_i = encrypt_Text(str(i))
-        # cipher_p = encrypt_Text(str(p));
+        endtime = time.time()
+        process_time = endtime - starttime
+
+        starttime = time.time()
 
         cipher_v = encrypt_Text_New(str(v))
         cipher_f = encrypt_Text_New(str(f))
         cipher_pf = encrypt_Text_New(str(pf))
         cipher_i = encrypt_Text_New(str(i))
         cipher_p = encrypt_Text_New(str(p))
+
+        endtime = time.time()
+        encryption_time = endtime - starttime
 
         data.append(
             {
@@ -40,5 +47,11 @@ def generate_Dummy_Room_Data(user_id: str, appliances_list: list):
                 "user_id": user_id,
             }
         )
+
+        with open("simulation_data.csv", "a", newline="") as file:
+            writer = csv.writer(file)
+            # writer.writerow(['Public key exchange time','Private key exchange time'])
+            writer.writerow([process_time, encryption_time])
+        file.close()
 
     return data

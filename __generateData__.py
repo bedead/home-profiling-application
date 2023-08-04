@@ -30,7 +30,7 @@ def runSimulator(user_id: str, user_type: str, selected_list: list, run_hour, ru
     global running_flag
     if running_flag:
         print("Generator already running.")
-
+        
         return "Already running"
     else:
         t_end = time.time() + (run_hour * 3600) + (run_min * 60)
